@@ -1,12 +1,13 @@
+from ai_engine.pipeline import rewrite_pipeline
+
 def rewrite_resume(resume_text: str, jd_text: str) -> str:
     try:
-        
-        rewritten = resume_text + " Optimized for job requirements."
+        result = rewrite_pipeline(resume_text, jd_text)
 
-        if not rewritten.strip():
+        if not result or not result.strip():
             raise ValueError("Empty AI response")
 
-        return rewritten
+        return result
 
     except Exception as e:
         return f"Error: {str(e)}"

@@ -1,5 +1,3 @@
-# ai_engine/pipeline.py
-
 from backend.utils.keyword_extractor import extract_keywords
 from ai_engine.truth_guard import validate
 
@@ -9,13 +7,18 @@ from langchain.chains import LLMChain
 
 import os
 
-# Load prompts from files
+
+# 🔹 Load prompts safely
 def load_prompt(file_path):
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"Prompt file not found: {file_path}")
+    
     with open(file_path, "r") as f:
         return f.read()
 
 
-def run_pipeline(resume_text: str, jd_text: str) -> str:
+# 🔥 FINAL FUNCTION (USED BY BACKEND)
+def rewrite_pipeline(resume_text: str, jd_text: str) -> str:
     try:
         # STEP 1: Extract keywords
         jd_keywords = extract_keywords(jd_text)
@@ -24,12 +27,11 @@ def run_pipeline(resume_text: str, jd_text: str) -> str:
         rewrite_prompt = load_prompt("ai_engine/prompts/rewrite_prompt.txt")
         constraint_prompt = load_prompt("ai_engine/prompts/constraint_prompt.txt")
 
-        # Combine prompts
         full_prompt = rewrite_prompt + "\n\n" + constraint_prompt
 
         # STEP 3: Setup LLM
         llm = ChatOpenAI(
-            temperature=0.3,  # low = safer (less hallucination)
+            temperature=0.3,
             model="gpt-4"
         )
 
@@ -46,12 +48,15 @@ def run_pipeline(resume_text: str, jd_text: str) -> str:
             "jd_keywords": ", ".join(jd_keywords)
         })
 
-        # STEP 5: Validate (truth guard)
+        if not ai_output or not ai_output.strip():
+            raise ValueError("Empty AI response")
+
+        # STEP 5: Truth Guard Validation
         validation = validate(resume_text, ai_output, jd_keywords)
 
         if not validation["passed"]:
-            # Remove hallucinated keywords
             cleaned_output = ai_output
+
             for word in validation["flagged_additions"]:
                 cleaned_output = cleaned_output.replace(word, "")
 

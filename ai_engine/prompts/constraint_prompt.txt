@@ -1,6 +1,11 @@
 STRICT CONSTRAINTS:
 
 - Do not add any skill not present in the original resume
-- Do not introduce new tools or technologies
+- Do not introduce new tools, technologies, or responsibilities
 - Only rephrase existing content
-- If unsure, keep original text unchanged
+- Do not expand beyond the original scope
+- If unsure, keep the original text unchanged
+- Ensure all rewritten content is truthful and verifiable
+
+FAIL CONDITION:
+If any new skill or tool is added that is not in the original resume, the output is invalid.
