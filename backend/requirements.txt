@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pdfminer.six
+reportlab
+google-generativeai
+python-multipart
+pydantic
+pytest
+httpx
+python-dotenv
