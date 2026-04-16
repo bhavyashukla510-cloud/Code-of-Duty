@@ -1,6 +1,7 @@
 import spacy
 import re
 
+
 nlp = spacy.load("en_core_web_sm")
 
 STOPWORDS = set([
@@ -8,16 +9,14 @@ STOPWORDS = set([
     "role", "job", "candidate", "requirements", "responsibilities"
 ])
 
-def extract_keywords(text: str) -> list:
+def extract_keywords(text: str) -> list[str]:
     doc = nlp(text)
 
     keywords = set()
 
-    # 🔹 Named Entities (e.g., "Google", "AWS")
     for ent in doc.ents:
         keywords.add(ent.text.lower().strip())
 
-    # 🔹 Noun chunks (e.g., "machine learning", "rest api")
     for chunk in doc.noun_chunks:
         phrase = chunk.text.lower().strip()
         if len(phrase) > 2 and phrase not in STOPWORDS:
@@ -44,3 +43,6 @@ def extract_keywords(text: str) -> list:
                 cleaned_keywords.add(part)
 
     return list(cleaned_keywords)
+
+
+    

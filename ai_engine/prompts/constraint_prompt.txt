@@ -1,0 +1,6 @@
+STRICT CONSTRAINTS:
+
+- Do not add any skill not present in the original resume
+- Do not introduce new tools or technologies
+- Only rephrase existing content
+- If unsure, keep original text unchanged
