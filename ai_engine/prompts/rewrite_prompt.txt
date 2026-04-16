@@ -7,12 +7,14 @@ STRICT RULES:
 - Do NOT add new experience
 - Do NOT invent skills, tools, or technologies
 - Preserve the original meaning
-- Improve clarity, impact, and keyword alignment
+- Keep all facts, roles, and timelines unchanged
 
 GUIDELINES:
-- Use action verbs
-- Incorporate relevant keywords from the job description naturally
+- Use strong action verbs
+- Improve clarity and impact
+- Naturally incorporate relevant keywords from the job description
 - Keep bullet points concise and professional
+- Do NOT exaggerate or fabricate achievements
 
 INPUT:
 Resume:
@@ -22,4 +24,6 @@ Job Description Keywords:
 {jd_keywords}
 
 OUTPUT:
-Return only the rewritten resume bullet points.
+- Return only the rewritten resume bullet points
+- Maintain original structure (bullet points)
+- Do NOT add explanations or extra text
