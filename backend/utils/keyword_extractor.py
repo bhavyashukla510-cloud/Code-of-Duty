@@ -1,48 +1,17 @@
-import spacy
 import re
 
+def extract_keywords(text):
+    # extract words (length >= 4)
+    words = re.findall(r'\b[a-zA-Z]{4,}\b', text.lower())
 
-nlp = spacy.load("en_core_web_sm")
+    # remove common words
+    stopwords = {
+        "this","that","with","have","from","your","their",
+        "about","which","will","would","there","these",
+        "those","been","being","into","over","under",
+        "using","used","also","other"
+    }
 
-STOPWORDS = set([
-    "experience", "skills", "ability", "knowledge", "work", "team",
-    "role", "job", "candidate", "requirements", "responsibilities"
-])
+    keywords = [w for w in words if w not in stopwords]
 
-def extract_keywords(text: str) -> list[str]:
-    doc = nlp(text)
-
-    keywords = set()
-
-    for ent in doc.ents:
-        keywords.add(ent.text.lower().strip())
-
-    for chunk in doc.noun_chunks:
-        phrase = chunk.text.lower().strip()
-        if len(phrase) > 2 and phrase not in STOPWORDS:
-            keywords.add(phrase)
-
-    # 🔹 Individual important words
-    for token in doc:
-        if token.pos_ in ["NOUN", "PROPN"]:
-            word = token.text.lower().strip()
-            if word not in STOPWORDS and len(word) > 2:
-                keywords.add(word)
-
-    # 🔹 CLEAN keywords (VERY IMPORTANT for your scorer)
-    cleaned_keywords = set()
-
-    for kw in keywords:
-        # remove special characters
-        kw = re.sub(r'[^a-zA-Z0-9\s]', '', kw)
-
-        # split phrases into individual words ALSO
-        parts = kw.split()
-        for part in parts:
-            if len(part) > 2:
-                cleaned_keywords.add(part)
-
-    return list(cleaned_keywords)
-
-
-    
+    return list(set(keywords))

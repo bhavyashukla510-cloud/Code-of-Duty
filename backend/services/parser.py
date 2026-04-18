@@ -1,12 +1,13 @@
-import io
-from pdfminer.high_level import extract_text
+import fitz  # PyMuPDF
 
-def extract_text_from_pdf(file_content: bytes) -> str:
+def extract_text_from_pdf(file_bytes):
     try:
-        pdf_file = io.BytesIO(file_content)
-        text = extract_text(pdf_file)
-        cleaned_text = text.strip()
-        return cleaned_text
-    except Exception as e:
-        print(f"Error reading PDF: {e}")
+        doc = fitz.open(stream=file_bytes, filetype="pdf")
+        text = ""
+
+        for page in doc:
+            text += page.get_text()
+
+        return text.strip()
+    except:
         return ""
