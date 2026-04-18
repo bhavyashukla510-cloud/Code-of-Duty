@@ -1,13 +1,10 @@
-from ai_engine.pipeline import rewrite_pipeline
+from ai_engine.agentic_pipeline import run_agentic_pipeline
 
 def rewrite_resume(resume_text: str, jd_text: str) -> str:
-    try:
-        result = rewrite_pipeline(resume_text, jd_text)
+    result = run_agentic_pipeline(resume_text, jd_text)
 
-        if not result or not result.strip():
-            raise ValueError("Empty AI response")
+    # ❌ If API failed → return original resume
+    if result.startswith("ERROR") or len(result) < 50:
+        return resume_text
 
-        return result
-
-    except Exception as e:
-        return f"Error: {str(e)}"
+    return result
