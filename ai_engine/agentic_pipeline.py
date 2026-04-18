@@ -21,7 +21,7 @@ CRITICAL TRUTH-PRESERVATION RULES:
 4. If the resume mentions "built web apps" and the JD says "developed scalable applications", rephrase to: "Developed scalable web applications" — same experience, JD vocabulary.
 5. Reorder sections to prioritize the most relevant experience for this role.
 6. Use strong action verbs (Developed, Architected, Implemented, Optimized, Led, etc.)
-7. Keep it to 1 page maximum, clean and structured.
+7. KEEP IT STRICTLY TO 1 PAGE MAXIMUM. Limit bullet points to 3-4 per role and be extremely concise.
 
 FORMAT:
 Name

@@ -83,15 +83,15 @@ export default function UploadResume({ onUploadComplete }) {
   const dropzoneClass = isDragReject
     ? 'dropzone-reject'
     : isDragActive
-    ? 'dropzone-active'
-    : 'dropzone-idle';
+      ? 'dropzone-active'
+      : 'dropzone-idle';
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 15 }}
-      className="glass-card-premium p-6 sm:p-8" 
+      className="glass-card-premium p-6 sm:p-8"
       id="upload-section"
     >
       {/* Header */}

@@ -41,21 +41,21 @@ def generate_pdf(text: str, job_description: str = "") -> bytes:
     name_style = ParagraphStyle(
         name="NameHeader",
         parent=styles["Normal"],
-        fontSize=20,
+        fontSize=24,
         fontName="Helvetica-Bold",
         alignment=TA_CENTER,
-        spaceAfter=4,
-        textColor=colors.HexColor("#111111"),
+        spaceAfter=2,
+        textColor=colors.HexColor("#000000"),
     )
 
     contact_style = ParagraphStyle(
         name="ContactInfo",
         parent=styles["Normal"],
-        fontSize=9,
+        fontSize=9.5,
         fontName="Helvetica",
         alignment=TA_CENTER,
-        spaceAfter=6,
-        textColor=colors.HexColor("#444444"),
+        spaceAfter=2,
+        textColor=colors.HexColor("#333333"),
         leading=12,
     )
 
@@ -64,31 +64,31 @@ def generate_pdf(text: str, job_description: str = "") -> bytes:
         parent=styles["Normal"],
         fontSize=11,
         fontName="Helvetica-Bold",
-        spaceBefore=8,
-        spaceAfter=2,
-        textColor=colors.HexColor("#111111"),
+        spaceBefore=6,
+        spaceAfter=1,
+        textColor=colors.HexColor("#000000"),
     )
 
     normal_style = ParagraphStyle(
         name="NormalText",
         parent=styles["Normal"],
-        fontSize=9.5,
+        fontSize=10,
         fontName="Helvetica",
-        leading=13,
+        leading=12.5,
         spaceAfter=2,
-        textColor=colors.HexColor("#333333"),
+        textColor=colors.HexColor("#111111"),
         alignment=TA_JUSTIFY,
     )
 
     bullet_style = ParagraphStyle(
         name="BulletPoint",
         parent=styles["Normal"],
-        fontSize=9.5,
+        fontSize=10,
         fontName="Helvetica",
-        leading=13,
+        leading=12.5,
         spaceAfter=2,
-        leftIndent=14,
-        textColor=colors.HexColor("#333333"),
+        leftIndent=12,
+        textColor=colors.HexColor("#111111"),
         alignment=TA_JUSTIFY,
     )
 
@@ -107,18 +107,18 @@ def generate_pdf(text: str, job_description: str = "") -> bytes:
         parent=styles["Normal"],
         fontSize=10,
         fontName="Helvetica-Bold",
-        leading=13,
-        textColor=colors.HexColor("#222222"),
+        leading=12.5,
+        textColor=colors.HexColor("#000000"),
     )
 
     italic_right_style = ParagraphStyle(
         name="ItalicRight",
         parent=styles["Normal"],
-        fontSize=9,
+        fontSize=10,
         fontName="Helvetica-Oblique",
-        leading=12,
+        leading=12.5,
         alignment=2,  # TA_RIGHT
-        textColor=colors.HexColor("#555555"),
+        textColor=colors.HexColor("#333333"),
     )
 
     # ── JD keywords for highlighting ──
@@ -187,9 +187,9 @@ def generate_pdf(text: str, job_description: str = "") -> bytes:
 
     # Top divider
     content.append(HRFlowable(
-        width="100%", thickness=1,
-        color=colors.HexColor("#333333"),
-        spaceAfter=4, spaceBefore=2
+        width="100%", thickness=1.5,
+        color=colors.HexColor("#000000"),
+        spaceAfter=6, spaceBefore=1
     ))
 
     # Phase 2: Process body
@@ -210,12 +210,12 @@ def generate_pdf(text: str, job_description: str = "") -> bytes:
             (stripped == stripped.upper() and len(stripped) > 2 and len(stripped) < 40 and re.search(r'[A-Z]', stripped))
         ):
             section_name = stripped.rstrip(":").upper()
-            content.append(Spacer(1, 4))
+            content.append(Spacer(1, 6))
             content.append(Paragraph(f"<b>{section_name}</b>", section_style))
             content.append(HRFlowable(
-                width="100%", thickness=0.6,
-                color=colors.HexColor("#333333"),
-                spaceAfter=3
+                width="100%", thickness=1,
+                color=colors.HexColor("#000000"),
+                spaceAfter=4, spaceBefore=0
             ))
             continue
 

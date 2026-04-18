@@ -69,11 +69,11 @@ export default function JobDescriptionInput({ onJDSubmit }) {
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 15 }}
-      className="glass-card-premium p-6 sm:p-8" 
+      className="glass-card-premium p-6 sm:p-8"
       id="jd-section"
     >
       {/* Header */}
@@ -137,9 +137,8 @@ export default function JobDescriptionInput({ onJDSubmit }) {
             onBlur={() => setTouched(true)}
             placeholder="Paste the full job description here…&#10;&#10;Include responsibilities, requirements, qualifications, and preferred skills for best results."
             rows={8}
-            className={`input-field resize-y min-h-[160px] ${
-              meetsMinLength ? 'input-valid' : ''
-            } ${touched && !isValid ? 'border-red-400 focus:border-red-500' : ''}`}
+            className={`input-field resize-y min-h-[160px] ${meetsMinLength ? 'input-valid' : ''
+              } ${touched && !isValid ? 'border-red-400 focus:border-red-500' : ''}`}
           />
 
           {/* Character counter + validation */}

@@ -83,8 +83,8 @@ async def tailor_resume(
 
     if missing_sections:
         report["suggestions"].append(f"Add missing sections: {', '.join(s.title() for s in missing_sections)}")
-    if len(missing_keywords) > 5:
-        report["suggestions"].append(f"Consider gaining experience in: {', '.join(missing_keywords[:8])}")
+    if missing_keywords:
+        report["suggestions"].append(f"Consider learning these technical skills required by the JD but missing from your resume: {', '.join(missing_keywords[:10])}")
     if match_percentage < 50:
         report["suggestions"].append("Keyword match is below 50%. The resume may need more relevant experience for this role.")
     if match_percentage >= 70:
