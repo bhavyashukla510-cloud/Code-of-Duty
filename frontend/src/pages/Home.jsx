@@ -41,6 +41,7 @@ export default function Home() {
   // ── Zustand State ──
   const {
     resumeText, setResumeText,
+    resumeFile,
     jdData, setJdData,
     isLoading, setIsLoading,
     error, setError,
@@ -76,11 +77,20 @@ export default function Home() {
   const handleTailor = async () => {
     if (!canSubmit) return;
 
+    // ✅ FIX: Use the actual File object, not the text string
+    const fileToSend = resumeFile;
+
+    if (!fileToSend) {
+      setError('Please upload a resume file first (PDF required).');
+      return;
+    }
+
     setIsLoading(true);
     setError('');
 
     try {
-      const result = await tailorResume(resumeText, jdData.jdText);
+      // ✅ Pass File object (not string) and job description
+      const result = await tailorResume(fileToSend, jdData.jdText);
       setResult(result);
       setIsLoading(false);
       navigate('/result', {
@@ -91,7 +101,7 @@ export default function Home() {
         },
       });
     } catch (err) {
-      setError(err.friendlyMessage || 'Something went wrong. Please try again.');
+      setError(err.friendlyMessage || err.message || 'Something went wrong. Please try again.');
       setIsLoading(false);
     }
   };

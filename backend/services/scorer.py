@@ -1,8 +1,6 @@
 import re
-from ai_engine.llm_judge import llm_judge_score# 🔹 Extract meaningful keywords
-def extract_keywords(text):
-    words = re.findall(r'\b[a-zA-Z]{4,}\b', text.lower())
-    return list(set(words))
+from backend.utils.keyword_extractor import extract_keywords
+from ai_engine.llm_judge import llm_judge_score
 
 
 # 🔹 1. Keyword Match Score (40%)
@@ -37,7 +35,7 @@ def keyword_frequency_score(resume, jd):
 
 # 🔹 3. Resume Structure Score (20%)
 def structure_score(resume):
-    sections = ["education", "skills", "projects", "experience"]
+    sections = ["education", "skills", "projects", "experience", "summary", "certifications"]
 
     resume_lower = resume.lower()
     found = sum(1 for sec in sections if sec in resume_lower)
@@ -49,7 +47,9 @@ def structure_score(resume):
 def action_verbs_score(resume):
     verbs = [
         "developed", "built", "designed", "implemented",
-        "optimized", "led", "created", "improved"
+        "optimized", "led", "created", "improved",
+        "deployed", "integrated", "managed", "delivered",
+        "architected", "automated", "collaborated", "spearheaded"
     ]
 
     resume_lower = resume.lower()
@@ -88,7 +88,7 @@ def get_scores(original_resume, rewritten_resume, jd_text):
     return {
         "before_score": before_final,
         "after_score": after_final,
-        "improvement": f"{'+' if improvement >= 0 else ''}{improvement}%",
+        "improvement": improvement,  # ✅ Return as number, not string
 
         # optional (for debugging / demo)
         "before_ats": before_ats,

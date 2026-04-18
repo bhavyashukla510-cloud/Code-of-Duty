@@ -9,4 +9,5 @@ openai
 langchain
 langchain-community
 langchain-core
-pdfminer.six
+PyMuPDF
+requests

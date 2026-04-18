@@ -22,6 +22,19 @@ const useResumeStore = create((set, get) => ({
   afterScore: 0,
   improvement: 0,
   jdKeywords: [],
+  missingKeywords: [],
+
+  // ── Sub-scores ──
+  beforeATS: 0,
+  afterATS: 0,
+  beforeLLM: 0,
+  afterLLM: 0,
+
+  // ── PDF Blob ──
+  pdfBlob: null,
+
+  // ── Analysis Report ──
+  report: null,
 
   // ── UI State ──
   isLoading: false,
@@ -47,6 +60,15 @@ const useResumeStore = create((set, get) => ({
     const afterScore = data?.after_score ?? data?.afterScore ?? 0;
     const improvement = data?.improvement ?? (afterScore - beforeScore);
     const jdKeywords = data?.jd_keywords ?? data?.jdKeywords ?? [];
+    const missingKeywords = data?.missing_keywords ?? data?.missingKeywords ?? [];
+    const pdfBlob = data?.blob ?? null;
+    const report = data?.report ?? null;
+
+    // Sub-scores
+    const beforeATS = data?.before_ats ?? data?.beforeATS ?? 0;
+    const afterATS = data?.after_ats ?? data?.afterATS ?? 0;
+    const beforeLLM = data?.before_llm ?? data?.beforeLLM ?? 0;
+    const afterLLM = data?.after_llm ?? data?.afterLLM ?? 0;
 
     set({
       result: data,
@@ -55,6 +77,13 @@ const useResumeStore = create((set, get) => ({
       afterScore,
       improvement,
       jdKeywords,
+      missingKeywords,
+      pdfBlob,
+      report,
+      beforeATS,
+      afterATS,
+      beforeLLM,
+      afterLLM,
     });
   },
 
@@ -77,6 +106,13 @@ const useResumeStore = create((set, get) => ({
     afterScore: 0,
     improvement: 0,
     jdKeywords: [],
+    missingKeywords: [],
+    beforeATS: 0,
+    afterATS: 0,
+    beforeLLM: 0,
+    afterLLM: 0,
+    pdfBlob: null,
+    report: null,
     isLoading: false,
     loadingMessage: '',
     error: '',
@@ -89,6 +125,13 @@ const useResumeStore = create((set, get) => ({
     afterScore: 0,
     improvement: 0,
     jdKeywords: [],
+    missingKeywords: [],
+    beforeATS: 0,
+    afterATS: 0,
+    beforeLLM: 0,
+    afterLLM: 0,
+    pdfBlob: null,
+    report: null,
   }),
 }));
 

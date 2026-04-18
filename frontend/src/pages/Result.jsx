@@ -48,8 +48,8 @@ export default function Result() {
     result, setResult,
     tailoredText, resumeText,
     beforeScore, afterScore, improvement,
-    jdKeywords, jdData,
-    resumeFile,
+    jdKeywords, missingKeywords, jdData,
+    resumeFile, report,
     resetAll,
   } = useResumeStore();
 
@@ -88,7 +88,7 @@ export default function Result() {
     }
   }, [result, location.state, navigate]);
 
-  // ── Auto-fetch score if not present ──
+  // ── Auto-fetch score only if scores came back as 0 (fallback) ──
   useEffect(() => {
     const needsScore = result && beforeScore === 0 && afterScore === 0 && !isScoring;
     if (needsScore && resumeText && tailoredText && jdData?.jdText) {
@@ -111,7 +111,7 @@ export default function Result() {
     setDownloadSuccess(false);
 
     try {
-      const blob = await downloadPDF();
+      const blob = await downloadPDF(tailoredText || displayTailoredText, jdData?.jdText || '');
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
@@ -239,6 +239,105 @@ export default function Result() {
             resumeFile={resumeFile}
           />
         </motion.div>
+
+        {/* ── Analysis Report ── */}
+        {(report || missingKeywords?.length > 0) && (
+          <motion.div variants={itemVariants} className="mb-8">
+            <div className="glass-card p-6 lg:p-8" id="analysis-report">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <h2 className="text-lg font-semibold text-slate-900">Analysis Report</h2>
+                  <p className="text-sm text-slate-400">Keyword coverage & optimization insights</p>
+                </div>
+                {report?.keyword_match_rate && (
+                  <span className="ml-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 text-brand-700 text-sm font-semibold border border-brand-200/40">
+                    {report.keyword_match_rate} match
+                  </span>
+                )}
+              </div>
+
+              {/* Stats Row */}
+              {report && (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                  <div className="bg-green-50/60 rounded-lg p-3 text-center border border-green-100/60">
+                    <p className="text-2xl font-bold text-green-600">{report.matched_count}</p>
+                    <p className="text-xs text-slate-500 mt-0.5">Matched</p>
+                  </div>
+                  <div className="bg-red-50/60 rounded-lg p-3 text-center border border-red-100/60">
+                    <p className="text-2xl font-bold text-red-500">{report.missing_count}</p>
+                    <p className="text-xs text-slate-500 mt-0.5">Missing</p>
+                  </div>
+                  <div className="bg-blue-50/60 rounded-lg p-3 text-center border border-blue-100/60">
+                    <p className="text-2xl font-bold text-blue-600">{report.total_jd_keywords}</p>
+                    <p className="text-xs text-slate-500 mt-0.5">JD Keywords</p>
+                  </div>
+                  <div className="bg-brand-50/60 rounded-lg p-3 text-center border border-brand-100/60">
+                    <p className="text-2xl font-bold text-brand-600">{report.present_sections?.length || 0}/5</p>
+                    <p className="text-xs text-slate-500 mt-0.5">Sections</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Missing Keywords */}
+              {missingKeywords?.length > 0 && (
+                <div className="mb-5">
+                  <p className="text-sm font-semibold text-red-600 mb-2 flex items-center gap-1.5">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                    </svg>
+                    Missing Keywords ({missingKeywords.length})
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {missingKeywords.map((kw, i) => (
+                      <span key={i} className="inline-flex items-center px-2.5 py-1 text-[11px] font-medium rounded-md bg-red-50 text-red-600 border border-red-200/40">
+                        {kw}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Missing Sections */}
+              {report?.missing_sections?.length > 0 && (
+                <div className="mb-5">
+                  <p className="text-sm font-semibold text-amber-600 mb-2 flex items-center gap-1.5">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                    Missing Sections
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {report.missing_sections.map((sec, i) => (
+                      <span key={i} className="inline-flex items-center px-2.5 py-1 text-[11px] font-medium rounded-md bg-amber-50 text-amber-700 border border-amber-200/40 capitalize">
+                        {sec}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Suggestions */}
+              {report?.suggestions?.length > 0 && (
+                <div className="bg-slate-50 rounded-lg p-4 border border-slate-200/60">
+                  <p className="text-sm font-semibold text-slate-700 mb-2">💡 Suggestions</p>
+                  <ul className="space-y-1.5">
+                    {report.suggestions.map((suggestion, i) => (
+                      <li key={i} className="text-sm text-slate-600 flex items-start gap-2">
+                        <span className="text-brand-500 mt-0.5">•</span>
+                        {suggestion}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
 
         {/* ── Action Buttons ── */}
         <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4" id="result-actions">

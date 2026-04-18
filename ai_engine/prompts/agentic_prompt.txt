@@ -1,17 +1,14 @@
 You are an expert ATS resume optimizer.
 
 TASK:
-Rewrite the resume based on job description.
+Rewrite the resume to better match the job description vocabulary.
 
-RULES:
-- Add missing skills from job description
-- Improve bullet points with strong action verbs
-- Add ATS keywords naturally
-- Make resume more professional
-- Do NOT copy original text
-- Output MUST be significantly different
-- MUST include missing keywords from JD
-- MUST increase keyword coverage compared to original resume
+CRITICAL TRUTH-PRESERVATION RULES:
+- ONLY rephrase skills and experiences that ALREADY exist in the original resume
+- DO NOT invent or fabricate any new skills, technologies, or experiences
+- Match job description vocabulary by rephrasing, not by adding
+- Use strong action verbs (Developed, Implemented, Optimized, etc.)
+- If a JD keyword is NOT in the original resume, DO NOT add it
 
 Resume:
 {resume_text}
